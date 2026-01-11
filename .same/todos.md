@@ -526,7 +526,7 @@ See `FEATURE_PARITY.md` for full analysis.
 - [x] Added route parsing for /project-planner hash route
 - [x] Read-only only (no data changes)
 
-### Phase 19c: Shopfloor Board (Execution View) [DONE v224]
+### Phase 19c: Shopfloor Board (Execution View) [DONE v225]
 - [x] Created ShopfloorBoardScreen.tsx with kanban-style execution view
 - [x] Week window toggle: "This Week" (default) / "Next Week"
 - [x] Aggregate tasks across all projects where dates overlap selected week
@@ -546,6 +546,11 @@ See `FEATURE_PARITY.md` for full analysis.
   - [x] Grip handle icon on draggable cards
   - [x] Status updates via ProjectRepository.update (only status field changed)
 - [x] Filters (v224)
+- [x] Undo status change (v225)
+  - [x] Single-level undo for drag-and-drop status changes
+  - [x] 10-second timeout with auto-dismiss
+  - [x] Toast/banner at bottom with task title, Undo button, dismiss (X)
+  - [x] Error handling if undo fails
   - [x] Assignee filter (All, specific names, Unassigned)
   - [x] Project filter (All, projects contributing tasks to week)
   - [x] Filters apply to all columns and Tasks Without Dates section
@@ -572,6 +577,7 @@ See `FEATURE_PARITY.md` for full analysis.
 ---
 
 ## Current Version
+- v225: Shopfloor Board undo status change - single-level undo with 10s timeout, toast notification ✅ COMPLETE
 - v224: Shopfloor Board filters - assignee and project filters with helper text ✅ COMPLETE
 - v223: Shopfloor Board drag-and-drop status updates - drag cards between columns to update task status ✅ COMPLETE
 - v222: Shopfloor Board (execution view) - kanban-style task board with This Week/Next Week toggle, tasks grouped by status ✅ COMPLETE

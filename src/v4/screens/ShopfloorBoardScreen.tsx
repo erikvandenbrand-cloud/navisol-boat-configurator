@@ -6,7 +6,7 @@
 
 'use client';
 
-import { useState, useMemo, useCallback, useEffect, type DragEvent } from 'react';
+import { useState, useMemo, useCallback, useEffect, useRef, type DragEvent } from 'react';
 import {
   Clipboard,
   FolderOpen,
@@ -18,6 +18,8 @@ import {
   Lock,
   GripVertical,
   Filter,
+  X,
+  Undo2,
 } from 'lucide-react';
 import type {
   Project,
@@ -60,6 +62,14 @@ interface DragData {
   currentStatus: PlanningTaskStatus;
 }
 
+interface UndoState {
+  projectId: string;
+  taskId: string;
+  taskTitle: string;
+  previousStatus: PlanningTaskStatus;
+  newStatus: PlanningTaskStatus;
+}
+
 type WeekWindow = 'this-week' | 'next-week';
 
 const WEEK_WINDOW_OPTIONS: { value: WeekWindow; label: string }[] = [
@@ -73,6 +83,9 @@ const STATUS_ORDER: PlanningTaskStatus[] = ['TODO', 'IN_PROGRESS', 'DONE'];
 const ALL_ASSIGNEES = '__all__';
 const UNASSIGNED = '__unassigned__';
 const ALL_PROJECTS = '__all__';
+
+// Undo timeout in milliseconds
+const UNDO_TIMEOUT_MS = 10000;
 
 // ============================================
 // DATE HELPERS
@@ -166,6 +179,30 @@ export function ShopfloorBoardScreen({ onNavigateToProject }: ShopfloorBoardScre
   const [selectedAssignee, setSelectedAssignee] = useState<string>(ALL_ASSIGNEES);
   const [selectedProject, setSelectedProject] = useState<string>(ALL_PROJECTS);
 
+  // Undo state (in-memory only, single-level)
+  const [undoState, setUndoState] = useState<UndoState | null>(null);
+  const [undoError, setUndoError] = useState<string | null>(null);
+  const undoTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Clear undo timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (undoTimeoutRef.current) {
+        clearTimeout(undoTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  // Dismiss undo toast
+  const dismissUndo = useCallback(() => {
+    if (undoTimeoutRef.current) {
+      clearTimeout(undoTimeoutRef.current);
+      undoTimeoutRef.current = null;
+    }
+    setUndoState(null);
+    setUndoError(null);
+  }, []);
+
   // Navigate to project's Planning tab
   const navigateToProjectPlanning = useCallback((projectId: string) => {
     if (onNavigateToProject) {
@@ -195,28 +232,29 @@ export function ShopfloorBoardScreen({ onNavigateToProject }: ShopfloorBoardScre
     loadProjects();
   }, [loadProjects]);
 
-  // Update task status
+  // Update task status - returns info for undo if successful
   const updateTaskStatus = useCallback(async (
     projectId: string,
     taskId: string,
     newStatus: PlanningTaskStatus
-  ) => {
+  ): Promise<{ success: boolean; taskTitle?: string; previousStatus?: PlanningTaskStatus }> => {
     // Find the project
     const project = projects.find((p) => p.id === projectId);
-    if (!project) return;
+    if (!project) return { success: false };
 
     // Don't allow updates for CLOSED projects
-    if (project.status === 'CLOSED') return;
+    if (project.status === 'CLOSED') return { success: false };
 
     // Find the task
     const tasks = project.planning?.tasks || [];
     const taskIndex = tasks.findIndex((t) => t.id === taskId);
-    if (taskIndex === -1) return;
+    if (taskIndex === -1) return { success: false };
 
     const task = tasks[taskIndex];
+    const previousStatus = task.status || 'TODO';
 
     // No-op if already has this status
-    if (task.status === newStatus) return;
+    if (previousStatus === newStatus) return { success: false };
 
     // Create updated tasks array with only status changed
     const updatedTasks = tasks.map((t, idx) =>
@@ -236,8 +274,40 @@ export function ShopfloorBoardScreen({ onNavigateToProject }: ShopfloorBoardScre
       setProjects((prev) =>
         prev.map((p) => p.id === projectId ? updatedProject : p)
       );
+      return { success: true, taskTitle: task.title, previousStatus };
     }
+
+    return { success: false };
   }, [projects]);
+
+  // Handle undo
+  const handleUndo = useCallback(async () => {
+    if (!undoState) return;
+
+    // Clear the timeout
+    if (undoTimeoutRef.current) {
+      clearTimeout(undoTimeoutRef.current);
+      undoTimeoutRef.current = null;
+    }
+
+    try {
+      const result = await updateTaskStatus(
+        undoState.projectId,
+        undoState.taskId,
+        undoState.previousStatus
+      );
+
+      if (result.success) {
+        setUndoState(null);
+        setUndoError(null);
+      } else {
+        setUndoError('Failed to undo status change. The task may have been modified.');
+      }
+    } catch (error) {
+      console.error('Undo failed:', error);
+      setUndoError('Failed to undo status change. Please try again.');
+    }
+  }, [undoState, updateTaskStatus]);
 
   // Drag handlers
   const handleDragStart = useCallback((
@@ -299,7 +369,31 @@ export function ShopfloorBoardScreen({ onNavigateToProject }: ShopfloorBoardScre
 
       // Only update if status is different
       if (dragData.currentStatus !== targetStatus) {
-        await updateTaskStatus(dragData.projectId, dragData.taskId, targetStatus);
+        const result = await updateTaskStatus(dragData.projectId, dragData.taskId, targetStatus);
+
+        if (result.success && result.taskTitle && result.previousStatus) {
+          // Clear any existing undo timeout
+          if (undoTimeoutRef.current) {
+            clearTimeout(undoTimeoutRef.current);
+          }
+
+          // Set up undo state
+          setUndoState({
+            projectId: dragData.projectId,
+            taskId: dragData.taskId,
+            taskTitle: result.taskTitle,
+            previousStatus: result.previousStatus,
+            newStatus: targetStatus,
+          });
+          setUndoError(null);
+
+          // Auto-dismiss after 10 seconds
+          undoTimeoutRef.current = setTimeout(() => {
+            setUndoState(null);
+            setUndoError(null);
+            undoTimeoutRef.current = null;
+          }, UNDO_TIMEOUT_MS);
+        }
       }
     } catch (error) {
       console.error('Failed to process drop:', error);
@@ -563,7 +657,7 @@ export function ShopfloorBoardScreen({ onNavigateToProject }: ShopfloorBoardScre
   }
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-6 space-y-6 pb-24">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -819,6 +913,57 @@ export function ShopfloorBoardScreen({ onNavigateToProject }: ShopfloorBoardScre
             </div>
           </CardContent>
         </Card>
+      )}
+
+      {/* Undo Toast */}
+      {(undoState || undoError) && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50">
+          <div
+            className={`flex items-center gap-3 px-4 py-3 rounded-lg shadow-lg border ${
+              undoError
+                ? 'bg-red-50 border-red-200 text-red-800'
+                : 'bg-slate-800 border-slate-700 text-white'
+            }`}
+          >
+            {undoError ? (
+              <>
+                <AlertCircle className="h-4 w-4 text-red-500 flex-shrink-0" />
+                <span className="text-sm">{undoError}</span>
+                <button
+                  type="button"
+                  onClick={dismissUndo}
+                  className="ml-2 p-1 hover:bg-red-100 rounded transition-colors"
+                  aria-label="Dismiss"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </>
+            ) : (
+              <>
+                <Undo2 className="h-4 w-4 text-slate-400 flex-shrink-0" />
+                <span className="text-sm">
+                  Moved "<span className="font-medium">{undoState?.taskTitle}</span>" to {STATUS_LABELS[undoState?.newStatus || 'TODO']}
+                </span>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  onClick={handleUndo}
+                  className="ml-2 bg-white text-slate-800 hover:bg-slate-100 h-7 px-3"
+                >
+                  Undo
+                </Button>
+                <button
+                  type="button"
+                  onClick={dismissUndo}
+                  className="ml-1 p-1 hover:bg-slate-700 rounded transition-colors"
+                  aria-label="Dismiss"
+                >
+                  <X className="h-4 w-4 text-slate-400" />
+                </button>
+              </>
+            )}
+          </div>
+        </div>
       )}
     </div>
   );

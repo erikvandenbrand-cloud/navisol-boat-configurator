@@ -140,7 +140,7 @@ function getEffectiveEndDate(task: PlanningTask): string | undefined {
 
 function canShowOnGantt(task: PlanningTask): boolean {
   const hasStart = !!task.startDate;
-  const hasEnd = !!task.endDate || (task.durationDays && task.durationDays > 0);
+  const hasEnd = !!task.endDate || !!(task.durationDays && task.durationDays > 0);
   return hasStart && hasEnd;
 }
 
