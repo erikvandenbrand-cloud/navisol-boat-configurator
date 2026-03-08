@@ -1,0 +1,23 @@
+{
+  "buildCommand": "bun run build",
+  "installCommand": "bun install",
+  "framework": "nextjs",
+  "rewrites": [
+    {
+      "source": "/projects/:path*",
+      "destination": "/"
+    },
+    {
+      "source": "/clients",
+      "destination": "/"
+    },
+    {
+      "source": "/library",
+      "destination": "/"
+    },
+    {
+      "source": "/settings",
+      "destination": "/"
+    }
+  ]
+}

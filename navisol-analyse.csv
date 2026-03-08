@@ -1,0 +1,139 @@
+NAVISOL v4 - COMPLETE STRUCTUUR ANALYSE,,,,,,,
+Gegenereerd op: 11 januari 2026,,,,,,,
+,,,,,,,
+=== SECTIE 1: SCREENS & COMPONENTS ===,,,,,,,
+Type,Naam,Bestand,Regels,Categorie,Functionaliteit,Gerelateerd Aan,Probleem/Opmerking
+SCREEN,V4App,src/v4/screens/V4App.tsx,728,Navigation,Main app shell + routing + sidebar navigation,All screens,Central navigation hub
+SCREEN,DashboardScreen,src/v4/screens/DashboardScreen.tsx,491,Overview,KPIs + projects by status + revenue pipeline + recent activity,ProjectRepository,Geen planning data zichtbaar
+SCREEN,ProjectListScreen,src/v4/screens/ProjectListScreen.tsx,403,Projects,Project cards + filters + search,ProjectRepository,Geen planning indicators op cards
+SCREEN,ProjectDetailScreen,src/v4/screens/ProjectDetailScreen.tsx,2519,Projects,Mega component met alle project tabs (Overview/Config/Quotes/BOM/Production/Compliance/Planning/Documents/History),PlanningTab + ProductionTab + ComplianceTab,Te groot - 2500+ regels
+SCREEN,ClientListScreen,src/v4/screens/ClientListScreen.tsx,539,CRM,Client CRUD + contact persons,ClientRepository,
+SCREEN,LibraryScreen,src/v4/screens/LibraryScreen.tsx,1745,Library,Articles/Kits/Boat Models/Templates management,LibraryRepository,Groot maar logisch georganiseerd
+SCREEN,SettingsScreen,src/v4/screens/SettingsScreen.tsx,2278,System,Company info + VAT + Quote templates + Procedures + Task sets,SettingsRepository,Te groot - bevat te veel domeinen
+SCREEN,ProjectPlannerScreen,src/v4/screens/ProjectPlannerScreen.tsx,605,Planning,Portfolio Gantt view - alle projecten met taken,ProjectRepository,READ-ONLY - kan niet editen
+SCREEN,ResourcePlannerScreen,src/v4/screens/ResourcePlannerScreen.tsx,693,Planning,Resource allocation view - taken per resource,ProjectRepository,READ-ONLY - kan niet editen
+SCREEN,ShopfloorBoardScreen,src/v4/screens/ShopfloorBoardScreen.tsx,1036,Planning,Kanban board - drag & drop status changes,ProjectRepository,Alleen status wijzigen - geen task edit
+SCREEN,TimesheetsScreen,src/v4/screens/TimesheetsScreen.tsx,810,Time,Timesheet entries + reports,TimesheetRepository,
+SCREEN,StaffScreen,src/v4/screens/StaffScreen.tsx,568,Staff,Global staff list CRUD,StaffRepository,
+SCREEN,WINRegisterScreen,src/v4/screens/WINRegisterScreen.tsx,324,Compliance,WIN/CIN register voor alle boten,ProjectRepository,
+SCREEN,LoginScreen,src/v4/screens/LoginScreen.tsx,229,Auth,Login form + demo accounts,useAuth,
+COMPONENT,PlanningTab,src/v4/components/PlanningTab.tsx,2173,Planning,CRUD tasks + resources + Gantt chart + dependencies,ProjectDetailScreen,ENIGE plek om planning te editen - te groot
+COMPONENT,ProductionTab,src/v4/components/ProductionTab.tsx,1749,Production,Production stages + observations + feedback,ProjectDetailScreen,Los van planning
+COMPONENT,ComplianceTab,src/v4/components/ComplianceTab.tsx,1406,Compliance,CE compliance + certifications,ProjectDetailScreen,
+COMPONENT,ProjectContextPanel,src/v4/components/ProjectContextPanel.tsx,748,Overview,Project summary + suggestions + staff involvement,ProjectDetailScreen,Goede cohesie component
+COMPONENT,CreateProjectDialog,src/v4/components/CreateProjectDialog.tsx,614,Projects,New project wizard,ProjectListScreen,
+COMPONENT,TaskDialog,src/v4/components/TaskDialog.tsx,569,Production,Production task CRUD dialog,ProductionTab,Alleen voor PRODUCTION tasks
+COMPONENT,ArticleDialog,src/v4/components/ArticleDialog.tsx,769,Library,Article CRUD,LibraryScreen,
+COMPONENT,KitDialog,src/v4/components/KitDialog.tsx,661,Library,Kit CRUD,LibraryScreen,
+COMPONENT,BoatModelDialog,src/v4/components/BoatModelDialog.tsx,507,Library,Boat model CRUD,LibraryScreen,
+COMPONENT,AmendmentDialog,src/v4/components/AmendmentDialog.tsx,581,Projects,Post-freeze amendments,ProjectDetailScreen,
+COMPONENT,EditQuoteDialog,src/v4/components/EditQuoteDialog.tsx,463,Quotes,Quote editing,ProjectDetailScreen,
+COMPONENT,AddConfigurationItemDialog,src/v4/components/AddConfigurationItemDialog.tsx,539,Configuration,Add items to project config,ProjectDetailScreen,
+COMPONENT,EditConfigurationItemDialog,src/v4/components/EditConfigurationItemDialog.tsx,258,Configuration,Edit config item,ProjectDetailScreen,
+COMPONENT,AppliedStandardsSection,src/v4/components/AppliedStandardsSection.tsx,611,Compliance,CE standards management,ComplianceTab,
+COMPONENT,DocumentTemplatesSection,src/v4/components/DocumentTemplatesSection.tsx,774,Documents,Doc templates per project,ProjectDetailScreen,
+COMPONENT,VesselSystemsSection,src/v4/components/VesselSystemsSection.tsx,419,Configuration,Vessel systems/features,ProjectDetailScreen,
+COMPONENT,BoatsSection,src/v4/components/BoatsSection.tsx,432,Projects,Serial production boats,ProjectDetailScreen,
+COMPONENT,OwnerManualBlocksEditor,src/v4/components/OwnerManualBlocksEditor.tsx,641,Documents,Manual content blocks,DocumentTemplatesSection,
+COMPONENT,OwnerManualPreview,src/v4/components/OwnerManualPreview.tsx,414,Documents,Manual preview,DocumentTemplatesSection,
+COMPONENT,ProductionProceduresTab,src/v4/components/ProductionProceduresTab.tsx,1064,Production,Production procedures,SettingsScreen + LibraryScreen,Dubbel in Settings EN Library
+COMPONENT,DateRangePicker,src/v4/components/DateRangePicker.tsx,287,UI,Reusable date range picker,ShopfloorBoard + Timesheets,Goede herbruikbare component
+COMPONENT,StaffSelect,src/v4/components/StaffSelect.tsx,273,UI,Staff combobox,PlanningTab + TaskDialog,Goede herbruikbare component
+COMPONENT,StatusBadge,src/v4/components/StatusBadge.tsx,136,UI,Project/quote status badges,Everywhere,Goede herbruikbare component
+COMPONENT,LibraryItemPicker,src/v4/components/LibraryItemPicker.tsx,391,UI,Article/Kit selector,AddConfigurationItemDialog,
+COMPONENT,ArticleDetailViewer,src/v4/components/ArticleDetailViewer.tsx,489,Library,Article read-only view,LibraryScreen,
+COMPONENT,ArticleAttachmentsViewer,src/v4/components/ArticleAttachmentsViewer.tsx,276,Library,Article attachments,ArticleDetailViewer,
+COMPONENT,AddFromTaskSetDialog,src/v4/components/AddFromTaskSetDialog.tsx,387,Planning,Add tasks from template set,PlanningTab,
+COMPONENT,TemplateEditorDialog,src/v4/components/TemplateEditorDialog.tsx,371,Library,Template CRUD,LibraryScreen + SettingsScreen,
+COMPONENT,PreviewIndexDialog,src/v4/components/PreviewIndexDialog.tsx,380,Documents,Technical file index preview,ComplianceTab,
+COMPONENT,TimesheetsReportsView,src/v4/components/TimesheetsReportsView.tsx,518,Time,Timesheet reports,TimesheetsScreen,
+COMPONENT,TimesheetsOverviewChart,src/v4/components/TimesheetsOverviewChart.tsx,110,Time,Hours chart,TimesheetsReportsView,
+COMPONENT,TimesheetsProjectSplitChart,src/v4/components/TimesheetsProjectSplitChart.tsx,106,Time,Project hours split,TimesheetsReportsView,
+COMPONENT,TimesheetsPeriodToggle,src/v4/components/TimesheetsPeriodToggle.tsx,137,Time,Period selector (deprecated?),TimesheetsScreen,Vervangen door DateRangePicker?
+COMPONENT,EmptyState,src/v4/components/EmptyState.tsx,56,UI,Empty state placeholder,Various,
+,,,,,,,
+=== SECTIE 2: FUNCTIONALITEIT MATRIX ===,,,,,,,
+Functionaliteit,Dashboard,ProjectList,ProjectDetail,PlanningTab,ProjectPlanner,ResourcePlanner,ShopfloorBoard
+Project aanmaken,Nee,Ja,Nee,Nee,Nee,Nee,Nee
+Project details zien,Nee,Beperkt (card),Ja (volledig),Nee,Beperkt (row),Nee,Nee
+Project status wijzigen,Nee,Nee,Ja,Nee,Nee,Nee,Nee
+Planning tasks aanmaken,Nee,Nee,Via tab,Ja,Nee,Nee,Nee
+Planning tasks editen,Nee,Nee,Via tab,Ja,Nee,Nee,Nee
+Planning tasks zien,Nee,Nee,Via tab,Ja,Ja (Gantt),Ja (per resource),Ja (Kanban)
+Planning task status wijzigen,Nee,Nee,Via tab,Ja,Nee,Nee,Ja (drag)
+Planning resources beheren,Nee,Nee,Via tab,Ja,Nee,Nee,Nee
+Planning Gantt view,Nee,Nee,Via tab,Ja (project),Ja (portfolio),Nee,Nee
+Planning resourceweergave,Nee,Nee,Nee,Optie in Gantt,Nee,Ja,Nee
+Planning dependencies,Nee,Nee,Via tab,Ja,Nee,Nee,Nee
+Production tasks zien,Nee,Nee,Via tab,Nee,Nee,Nee,Nee
+Production tasks editen,Nee,Nee,Via tab,Nee,Nee,Nee,Nee
+Configuration editen,Nee,Nee,Ja,Nee,Nee,Nee,Nee
+Quotes beheren,Nee,Nee,Ja,Nee,Nee,Nee,Nee
+BOM zien,Nee,Nee,Ja,Nee,Nee,Nee,Nee
+Compliance/CE,Nee,Nee,Ja,Nee,Nee,Nee,Nee
+Documents genereren,Nee,Nee,Ja,Nee,Nee,Nee,Nee
+KPIs/metrics,Ja,Nee,Overview tab,Nee,Nee,Nee,Nee
+Recent activity,Ja,Nee,History tab,Nee,Nee,Nee,Nee
+Revenue pipeline,Ja,Nee,Nee,Nee,Nee,Nee,Nee
+Overdue alerts,Nee,Nee,Nee,Nee,Nee,Nee,Nee
+This week taken,Nee,Nee,Nee,Nee,Nee,Nee,Nee
+Navigatie naar project,Ja (recent),Ja,N/A,Via back,Ja,Ja (popup),Ja (popup)
+,,,,,,,
+=== SECTIE 3: NAVIGATIE STRUCTUUR ===,,,,,,,
+Sectie,Menu Item,Route (hash),Screen,Icoon,Toegang,Beschrijving,
+-,Dashboard,#/,DashboardScreen,LayoutDashboard,Iedereen,Overzicht KPIs en activiteit,
+Projects,Projects,#/projects,ProjectListScreen,FolderOpen,project:read,Alle projecten lijst,
+Projects,Project Detail,#/projects/{id},ProjectDetailScreen,-,project:read,Project details met tabs,
+Projects,Recent Projects,(localStorage),-,History,-,Laatste 5 geopende projecten,
+Clients,Clients,#/clients,ClientListScreen,Users,client:read,Klanten en contacten,
+Planning,Project Planner,#/project-planner,ProjectPlannerScreen,CalendarDays,project:read,Portfolio Gantt view,
+Planning,Resource Planner,#/resource-planner,ResourcePlannerScreen,Users,-,Resource allocatie view,
+Planning,Shopfloor Board,#/shopfloor-board,ShopfloorBoardScreen,Clipboard,-,Kanban uitvoering,
+Time,Timesheets,#/timesheets,TimesheetsScreen,Clock,timesheet:read,Uren registratie,
+Library,Library,#/library,LibraryScreen,Database,library:read,Articles/Kits/Models,
+System,Staff,#/staff,StaffScreen,Users,-,Medewerkers beheer,
+System,WIN Register,#/win-register,WINRegisterScreen,Hash,-,Watercraft ID nummers,
+System,Settings,#/settings,SettingsScreen,Settings,settings:read,Systeem instellingen,
+,,,,,,,
+=== SECTIE 4: DATA MODEL ===,,,,,,,
+Entity,Bestand,Embedded In,Relatie Type,Gerelateerd Aan,Key Velden,Opmerking,
+Project,domain/models/project.ts,-,Aggregate Root,-,id projectNumber title type status clientId,Hoofdentiteit,
+ProjectConfiguration,domain/models/project.ts,Project,Embedded,Project,items subtotalExclVat totalInclVat isFrozen,Working configuratie,
+ConfigurationItem,domain/models/project.ts,ProjectConfiguration,Embedded,Article/Kit,articleId kitId name quantity unitPriceExclVat,Items in config,
+ConfigurationSnapshot,domain/models/project.ts,Project,Collection,ProjectConfiguration,snapshotNumber trigger data,Immutable snapshots,
+ProjectQuote,domain/models/project.ts,Project,Collection,-,quoteNumber version status lines totalInclVat,Offertes,
+QuoteLine,domain/models/project.ts,ProjectQuote,Embedded,ConfigurationItem,configurationItemId quantity unitPriceExclVat,Offerte regels,
+BOMSnapshot,domain/models/project.ts,Project,Collection,ConfigurationSnapshot,snapshotNumber items totalCostExclVat,Bill of Materials,
+BOMItem,domain/models/project.ts,BOMSnapshot,Embedded,Article,articleNumber name quantity unitCost,BOM onderdelen,
+ProjectDocument,domain/models/project.ts,Project,Collection,-,type title version status fileData,Gegenereerde docs,
+ProjectAmendment,domain/models/project.ts,Project,Collection,ConfigurationSnapshot,amendmentNumber type reason priceImpactExclVat,Wijzigingen na freeze,
+ProjectPlanning,domain/models/project.ts,Project,Embedded,-,tasks resources,Planning container,
+PlanningTask,domain/models/project.ts,ProjectPlanning,Collection,PlanningResource,id title startDate endDate durationDays status assigneeResourceIds dependsOnTaskIds,Planning taken,
+PlanningResource,domain/models/project.ts,ProjectPlanning,Collection,-,id name role capacityPct,Resources per project,
+ProjectTask,domain/models/task.ts,Project,Collection,PlanningTask,id title status priority assignee planningTaskId,Production taken - LOS van PlanningTask,
+ProductionStage,domain/models/production.ts,Project,Collection,-,id name status tasks,Productie stages,
+ProductionObservation,domain/models/production.ts,Project,Collection,-,id type description severity,Productie feedback,
+ComplianceCertification,domain/models/compliance.ts,Project,Collection,-,id type status issuedBy,CE/certificaten,
+TechnicalFile,domain/models/technical-file.ts,Project,Embedded,-,sections,Technisch dossier,
+AppliedStandard,domain/models/project.ts,Project,Collection,-,code title year scopeNote isHarmonised,Toegepaste normen,
+BoatInstance,domain/models/project.ts,Project,Collection,-,id label win,Seriebouw boten,
+Client,domain/models/client.ts,-,Standalone,Project (via clientId),id name email phone contacts,Klanten,
+ClientContact,domain/models/client.ts,Client,Collection,-,id name email phone role,Contactpersonen,
+StaffMember,domain/models/staff.ts,-,Standalone,-,id name label isActive,Globale medewerkers - NIET gelinkt aan PlanningResource,
+Article,domain/models/library-v4.ts,-,Standalone,ConfigurationItem,id articleNumber name category sellPrice costPrice,Library artikelen,
+Kit,domain/models/library-v4.ts,-,Standalone,ConfigurationItem,id name category items sellPrice,Kits (bundels),
+BoatModel,domain/models/library-v4.ts,-,Standalone,Project,id name propulsionType basePrice,Boot modellen,
+TimesheetEntry,domain/models/timesheet.ts,-,Standalone,Project/StaffMember,id date hours projectId staffId description,Uren entries,
+AuditEntry,domain/models/audit.ts,-,Standalone,-,id entityType entityId action userId timestamp,Audit log,
+,,,,,,,
+=== SECTIE 5: GEÏDENTIFICEERDE PROBLEMEN ===,,,,,,,
+Probleem,Type,Impact,Locatie,Beschrijving,Suggestie,,
+Planning Fragmentatie,Architecture,Hoog,4 screens,Planning functionaliteit verspreid over PlanningTab + ProjectPlanner + ResourcePlanner + ShopfloorBoard,Uniforme task edit dialog,,
+Geen Planning in Dashboard,Missing Feature,Hoog,DashboardScreen,Dashboard toont geen planning data - geen taken deze week of overdue,Dashboard widget toevoegen,,
+Read-only Planners,UX,Hoog,ProjectPlanner + ResourcePlanner,Portfolio views zijn read-only - moet navigeren naar project om te editen,Inline editing toevoegen,,
+PlanningTask vs ProjectTask,Architecture,Medium,project.ts + task.ts,Twee verschillende task types met optionele link via planningTaskId,Verwarrend voor gebruikers,,
+Staff vs Resources,Architecture,Medium,staff.ts + project.ts,Global Staff niet automatisch gesynct met project Resources,Dubbel werk bij toewijzen,,
+Mega Components,Maintainability,Medium,3 files,ProjectDetailScreen (2519) + SettingsScreen (2278) + PlanningTab (2173) zijn te groot,Opsplitsen in kleinere components,,
+Templates/Procedures Dubbel,Architecture,Laag,Settings + Library,Zelfde functionaliteit op 2 plekken,Consolideren naar 1 plek,,
+Geen Overdue Alerts,Missing Feature,Medium,Overal,Nergens worden overdue taken getoond,Alerts toevoegen,,
+Geen Planning Indicators,UX,Medium,ProjectListScreen,Project cards tonen geen planning status/taken count,Badges toevoegen,,
