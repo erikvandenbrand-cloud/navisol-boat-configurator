@@ -3,7 +3,6 @@
  * Clean hierarchical structure: Categories → Subcategories → Articles/Kits
  * All versioned entities support DRAFT → APPROVED → DEPRECATED lifecycle
  */
-
 import type { Entity } from './common';
 
 // ============================================
@@ -62,16 +61,22 @@ export interface LibraryArticle extends Entity {
   subcategoryId: string;
   unit: string; // pcs, m, set, etc.
   supplierId?: string;
+  /** Supplier name (denormalized for display convenience) */
+  supplierName?: string;
   tags?: ArticleTag[];
   currentVersionId?: string;
-
+  /** Whether the article is archived (soft delete) */
+  archived?: boolean;
+  /** When the article was archived */
+  archivedAt?: string;
+  /** Who archived the article */
+  archivedBy?: string;
   /**
    * Default supplier cost (excl. VAT) for BOM calculations.
    * Optional - if present, new BOM lines will use this as default cost with source "LIBRARY".
    * This does NOT retroactively update existing BOM lines.
    */
   supplierCostExclVat?: number | null;
-
   /**
    * Free text note for supplier cost source, e.g., "Supplier X price list 2026-01"
    */
@@ -165,6 +170,8 @@ export interface CreateArticleInput {
   subcategoryId: string;
   unit: string;
   supplierId?: string;
+  /** Denormalized supplier name for display */
+  supplierName?: string;
   tags?: ArticleTag[];
   sellPrice: number;
   costPrice?: number;
