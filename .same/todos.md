@@ -1,15 +1,32 @@
 # Navisol v4 - Active Tasks
 
+## Recently Completed
+
+- [x] **Added supplier field and archive/delete for articles** (v365)
+  - Added supplier dropdown to ArticleDialog (create and edit modes)
+  - Added `archived` field to LibraryArticle model with archive/restore/delete methods
+  - LibraryScreen now shows archive button, restore button for archived items, and permanent delete
+  - Added "Show archived" toggle in the articles table
+  - Supplier column displayed in articles table
+  - Delete confirmation dialog for permanent deletion
+
+- [x] **FIXED: Demo data reappearing after deletion** (v364)
+  - Added persistent initialization flags to SettingsService
+  - Updated all seed/init functions to use flags instead of data count checks
+  - Now deleted data stays deleted - no more re-seeding on app reload
+
 ## Supabase Integration
+
 - [x] Supabase credentials configured in `.env.local`
 - [x] Updated migration script to be idempotent (safe to run multiple times)
 - [ ] **PENDING USER ACTION:** Run the updated migration in Supabase SQL Editor
   - File: `supabase/migrations/001_initial_schema.sql`
   - The script now drops existing policies before creating them
-  - Expected result: "✅ Table 'entities' created successfully"
-- [x] Added Data Persistence Status card in Settings → Import/Export tab
+  - Expected result: "Table 'entities' created successfully"
+- [x] Added Data Persistence Status card in Settings Import/Export tab
 
-## Recently Completed
+## Previous Completions
+
 - [x] Verified Settings screen has Import/Export tab (v362)
 - [x] Production users cannot mark goods as received (v355)
 - [x] Customer Offer feature with templates (v352-353)
@@ -17,11 +34,16 @@
 - [x] Permission-based UI restrictions
 
 ## Notes
+
 - The "data tab" is labeled "Import/Export" in the Settings screen
 - User must log in first to see Settings
 - Supabase will be active once migration is run
+- Initialization flags stored in app settings - persists even when data is deleted
+- Articles can be archived (soft delete) or permanently deleted
+- Supplier field is optional - stores both ID and name for convenience
 
 ## Backlog
+
 - [ ] Test Supabase data persistence after migration
 - [ ] Verify data sync across browser sessions
 - [ ] Consider deploying to Netlify with Supabase backend

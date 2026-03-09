@@ -1,7 +1,6 @@
 /**
  * Domain Services - v4
  */
-
 export * from './ConfigurationService';
 export * from './QuoteService';
 export * from './ProjectService';
@@ -30,3 +29,4 @@ export * from './AISuggestionService';
 export * from './StandardsLibraryService';
 export * from './CustomerOfferService';
 export * from './EagleboatsModelImportService';
+export * from './SupplierService';
