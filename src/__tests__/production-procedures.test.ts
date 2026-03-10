@@ -3,6 +3,9 @@
  * Tests for library-level production procedures with task set templates
  */
 
+// Import shared test utilities (sets up mock localStorage/window)
+import '@/domain/__tests__/testUtils';
+
 import { describe, test, expect, beforeEach } from 'bun:test';
 import type {
   ProductionProcedure,
@@ -909,7 +912,7 @@ describe('ProductionProcedureService', () => {
       const updatedProject = await ProjectRepository.getById(project.id);
       expect(updatedProject).not.toBeNull();
       if (updatedProject) {
-        const tasksFromThisSet = updatedProject.tasks.filter(
+        const tasksFromThisSet = (updatedProject.workItems || []).filter(
           (t) => t.sourceTaskSetTemplateId === taskSetResult.value.id
         );
         expect(tasksFromThisSet.length).toBe(2);
