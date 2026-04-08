@@ -1,0 +1,51 @@
+Layer,Type,Name,Path,Description,Services Used,Child Components
+UI Screens,Screen,V4App,/src/v4/screens/V4App.tsx,Main app shell with navigation sidebar,AuthService,All screens
+UI Screens,Screen,LoginScreen,/src/v4/screens/LoginScreen.tsx,User authentication,AuthService,None
+UI Screens,Screen,DashboardScreen,/src/v4/screens/DashboardScreen.tsx,Overview dashboard with metrics,ProjectRepository/TimesheetService,Charts
+UI Screens,Screen,ProjectListScreen,/src/v4/screens/ProjectListScreen.tsx,Project listing and filters,ProjectRepository/ClientRepository,CreateProjectDialog
+UI Screens,Screen,ProjectDetailScreen,/src/v4/screens/ProjectDetailScreen.tsx,Project details with 10 tabs,All project services,ProductionTab/ComplianceTab/PlanningTab
+UI Screens,Screen,ClientListScreen,/src/v4/screens/ClientListScreen.tsx,Client management,ClientRepository,Client dialogs
+UI Screens,Screen,LibraryScreen,/src/v4/screens/LibraryScreen.tsx,Library with 4 tabs,LibraryV4Service/ProcedureService/WorkInstructionService,ArticleDialog/KitDialog/WorkInstructionsTab
+UI Screens,Screen,TimesheetsScreen,/src/v4/screens/TimesheetsScreen.tsx,Weekly/monthly time entry,TimesheetService/ProjectRepository,TimesheetsPeriodToggle/Charts
+UI Screens,Screen,WINRegisterScreen,/src/v4/screens/WINRegisterScreen.tsx,WIN number registry,WINRegisterService,Search/Filter
+UI Screens,Screen,ResourcePlannerScreen,/src/v4/screens/ResourcePlannerScreen.tsx,Resource allocation view,ProjectRepository,Gantt chart
+UI Screens,Screen,ProjectPlannerScreen,/src/v4/screens/ProjectPlannerScreen.tsx,Multi-project Gantt,ProjectRepository/PlanningSummaryService,Gantt chart
+UI Screens,Screen,ShopfloorBoardScreen,/src/v4/screens/ShopfloorBoardScreen.tsx,Daily task board,ProjectRepository/TaskService,Task cards
+UI Screens,Screen,StaffScreen,/src/v4/screens/StaffScreen.tsx,Staff directory,StaffRepository,Staff forms
+UI Screens,Screen,ProductionScreen,/src/v4/screens/ProductionScreen.tsx,Portfolio Kanban,ProjectRepository/TaskService,Mini task cards
+UI Screens,Screen,SettingsScreen,/src/v4/screens/SettingsScreen.tsx,App configuration,SettingsService,Settings forms
+UI Components,Tab Component,ProductionTab,/src/v4/components/ProductionTab.tsx,Production stages progress cards,ProductionService,Stage cards
+UI Components,Tab Component,ComplianceTab,/src/v4/components/ComplianceTab.tsx,CE compliance container,ComplianceService,Multiple sections
+UI Components,Tab Component,PlanningTab,/src/v4/components/PlanningTab.tsx,Planning/Gantt container,PlanningSummaryService,Gantt/Task list
+UI Components,Tab Component,WorkInstructionsTab,/src/v4/components/WorkInstructionsTab.tsx,Work instructions library,WorkInstructionService,Viewer/Editor
+UI Components,Tab Component,ProductionProceduresTab,/src/v4/components/ProductionProceduresTab.tsx,Procedure templates,ProductionProcedureService,Procedure cards
+UI Components,Tab Component,ProjectStageKanbanTab,/src/v4/components/ProjectStageKanbanTab.tsx,Project-level Kanban,TaskService,Kanban columns
+UI Components,Dialog,TaskDialog,/src/v4/components/TaskDialog.tsx,Create/edit production task,TaskService,Time log form
+UI Components,Dialog,PlanningTaskDialog,/src/v4/components/PlanningTaskDialog.tsx,Create/edit planning item,PlanningSummaryService,Date picker
+UI Components,Dialog,ArticleDialog,/src/v4/components/ArticleDialog.tsx,Create/edit article,LibraryV4Service,Attachment uploader
+UI Components,Dialog,KitDialog,/src/v4/components/KitDialog.tsx,Create/edit kit,LibraryV4Service,Component picker
+UI Components,Dialog,CreateProjectDialog,/src/v4/components/CreateProjectDialog.tsx,New project wizard,ProjectService,Model/client selects
+UI Components,Dialog,EditQuoteDialog,/src/v4/components/EditQuoteDialog.tsx,Edit quote lines,QuoteService,Line editor
+UI Components,Dialog,AmendmentDialog,/src/v4/components/AmendmentDialog.tsx,Request amendment,AmendmentService,Change form
+UI Components,Dialog,TemplateEditorDialog,/src/v4/components/TemplateEditorDialog.tsx,Edit doc template,DocumentService,Rich editor
+UI Components,Viewer,WorkInstructionViewer,/src/v4/components/WorkInstructionViewer.tsx,View instruction (read-only),WorkInstructionService,Markdown render
+UI Components,Editor,WorkInstructionEditor,/src/v4/components/WorkInstructionEditor.tsx,Edit instruction,WorkInstructionService,Markdown editor
+UI Components,Popup,WorkInstructionQuickView,/src/v4/components/WorkInstructionQuickView.tsx,Quick preview popup,WorkInstructionService,Summary view
+UI Components,Section,CEStatusWidget,/src/v4/components/CEStatusWidget.tsx,CE compliance progress,ComplianceService,Progress bars
+UI Components,Section,ComplianceInputsSection,/src/v4/components/ComplianceInputsSection.tsx,Vessel identity/standards,ComplianceService,Forms
+UI Components,Section,TechnicalDossierSection,/src/v4/components/TechnicalDossierSection.tsx,10-section dossier,ProjectRepository,File manager
+UI Components,Section,ComplianceOutputsSection,/src/v4/components/ComplianceOutputsSection.tsx,Document outputs,DocumentService,Generate buttons
+UI Components,Section,OwnerManualBlocksEditor,/src/v4/components/OwnerManualBlocksEditor.tsx,Modular manual editor,DocumentService,Block toggles
+UI Components,Section,AppliedStandardsSection,/src/v4/components/AppliedStandardsSection.tsx,ISO standards,ProjectRepository,Tag editor
+UI Components,Section,BoatsSection,/src/v4/components/BoatsSection.tsx,Boat instances,ProjectService,WIN entry
+UI Components,Chart,TimesheetsOverviewChart,/src/v4/components/TimesheetsOverviewChart.tsx,Hours bar chart,TimesheetService,Bar chart
+UI Components,Chart,TimesheetsProjectSplitChart,/src/v4/components/TimesheetsProjectSplitChart.tsx,Project breakdown,TimesheetService,Pie chart
+UI Components,Picker,LibraryItemPicker,/src/v4/components/LibraryItemPicker.tsx,Article/Kit selector,LibraryV4Service,Search/filter
+UI Components,Picker,StaffSelect,/src/v4/components/StaffSelect.tsx,Staff multi-select,StaffRepository,Combobox
+UI Components,Picker,DateRangePicker,/src/v4/components/DateRangePicker.tsx,Date range selection,None,Calendar
+UI Components,Badge,StatusBadge,/src/v4/components/StatusBadge.tsx,Status display components,None,Badge variants
+UI Components,Viewer,ArticleDetailViewer,/src/v4/components/ArticleDetailViewer.tsx,Article detail view,LibraryV4Service,Attachments
+UI Components,Viewer,ArticleAttachmentsViewer,/src/v4/components/ArticleAttachmentsViewer.tsx,Attachment viewer,LibraryV4Service,File preview
+UI Components,Viewer,EquipmentListViewer,/src/v4/components/EquipmentListViewer.tsx,Equipment list display,EquipmentListService,Table
+UI Components,Preview,OwnerManualPreview,/src/v4/components/OwnerManualPreview.tsx,Manual preview dialog,DocumentService,HTML render
+UI Components,Preview,PreviewIndexDialog,/src/v4/components/PreviewIndexDialog.tsx,Document index preview,DocumentService,Table of contents

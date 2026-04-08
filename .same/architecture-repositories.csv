@@ -1,0 +1,10 @@
+Layer,Repository,Entity,Storage Key,Operations,Adapter
+Data Layer,ClientRepository,Client,navisol_clients,"getAll, getById, create, update, delete",LocalStorageAdapter
+Data Layer,ProjectRepository,Project,navisol_projects,"getAll, getById, create, update, delete, getByClient, getByStatus",LocalStorageAdapter
+Data Layer,AuditRepository,AuditEntry,navisol_audit,"getAll, getByEntity, create",LocalStorageAdapter
+Data Layer,LibraryRepository,BoatModel/CatalogItem,navisol_library,"getModels, getItems, createModel, createItem (legacy)",LocalStorageAdapter
+Data Layer,LibraryV4Repository,"Category/Subcategory/Article/Kit",navisol_library_v4,"getCategories, getArticles, getKits, create*, update*, approve*",LocalStorageAdapter
+Data Layer,ProductionProcedureRepository,ProductionProcedure,navisol_procedures,"getAll, getById, create, update, approve",LocalStorageAdapter
+Data Layer,TimesheetRepository,TimesheetEntry,navisol_timesheets,"getAll, getByUser, getByProject, getByDateRange, create, update, delete",LocalStorageAdapter
+Data Layer,StaffRepository,StaffMember,navisol_staff,"getAll, getById, getActive, create, update, archive",LocalStorageAdapter
+Data Layer,WorkInstructionRepository,"WorkInstruction/Comment",navisol_work_instructions,"getAll, getById, getByStage, getByStatus, create, update, publish, addComment",LocalStorageAdapter
