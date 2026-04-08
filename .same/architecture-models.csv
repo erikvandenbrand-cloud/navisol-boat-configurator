@@ -1,0 +1,47 @@
+Layer,File,Entity,Type,Description,Key Fields,Related Entities
+Domain Models,common.ts,Entity,Interface,Base entity with versioning,"id, createdAt, updatedAt, version",All entities extend this
+Domain Models,common.ts,Archivable,Interface,Archive support,"archivedAt, archivedBy, archiveReason",Project/Client
+Domain Models,common.ts,PropulsionType,Enum,Propulsion options,"Electric, Hybrid, Diesel, Outboard",Project/Configuration
+Domain Models,common.ts,DocumentType,Enum,Document types,"QUOTE, OWNERS_MANUAL, CE_DECLARATION, TECHNICAL_FILE, INVOICE, DELIVERY_NOTE, EQUIPMENT_LIST",ProjectDocument
+Domain Models,client.ts,Client,Interface,Customer entity,"clientNumber, name, type, email, status",Project
+Domain Models,client.ts,ClientType,Enum,Customer type,"company, private",Client
+Domain Models,project.ts,Project,Interface,Main hub entity,"projectNumber, status, type, clientId, configuration, quotes, workItems, productionStages",All project-scoped entities
+Domain Models,project.ts,ProjectConfiguration,Interface,Equipment configuration,"items, propulsionType, subtotalExclVat, isFrozen",ConfigurationItem
+Domain Models,project.ts,ConfigurationItem,Interface,Equipment line item,"articleId, articleVersionId, name, quantity, unitPriceExclVat",Article/Kit
+Domain Models,project.ts,ProjectQuote,Interface,Quote snapshot,"quoteNumber, version, status, lines, totalInclVat",QuoteLine
+Domain Models,project.ts,BOMSnapshot,Interface,Bill of Materials,"items, totalCostExclVat, sourceQuoteId",BOMItem
+Domain Models,project.ts,ProjectDocument,Interface,Generated document,"type, version, status, fileData",DocumentTemplate
+Domain Models,project.ts,ProjectAmendment,Interface,Post-freeze change,"type, reason, priceImpactExclVat",ConfigurationSnapshot
+Domain Models,project.ts,VesselIdentity,Interface,CE vessel data,"win, modelName, designCategory, maxPersons",TechnicalFile
+Domain Models,project.ts,AppliedStandard,Interface,CE standards,"code, title, year, tags",TechnicalFile
+Domain Models,task.ts,WorkItem,Interface,Unified task model,"kind, status, title, stageId, assigneeIds, timeLogs",ProductionStage/WorkInstruction
+Domain Models,task.ts,WorkItemKind,Enum,Task discriminator,"planning, production",WorkItem
+Domain Models,task.ts,WorkItemStatus,Enum,Task status,"TODO, IN_PROGRESS, ON_HOLD, COMPLETED, CANCELLED",WorkItem
+Domain Models,task.ts,TaskCategory,Enum,Task category,"HULL, PROPULSION, ELECTRICAL, INTERIOR, EXTERIOR, NAVIGATION, SAFETY, FINISHING, TESTING, DELIVERY, OTHER",WorkItem
+Domain Models,task.ts,PlanningSummary,Interface,Gantt summary,"summaryType, stageId, productionWorkItemIds",WorkItem
+Domain Models,production.ts,ProductionStage,Interface,Stage progress,"code, status, progressPercent, comments, photos",WorkItem
+Domain Models,production.ts,ProductionStageCode,Enum,Stage codes,"PREP, HULL, PROPULSION, ELECTRICAL, INTERIOR, EXTERIOR, SYSTEMS, TESTING, FINAL",ProductionStage
+Domain Models,production.ts,ProductionObservation,Interface,Production feedback,"text, tags, createdBy",Project
+Domain Models,compliance.ts,ComplianceCertification,Interface,CE pack,"type, chapters, status",ComplianceChapter
+Domain Models,compliance.ts,ComplianceChapter,Interface,Dossier chapter,"chapterNumber, checklist, attachments",ComplianceChecklistItem
+Domain Models,compliance.ts,ComplianceChecklistItem,Interface,Checklist item,"title, type, status, mandatory, dossierSubheadingId",TechnicalFileSubheading
+Domain Models,technical-file.ts,TechnicalFile,Interface,10-section dossier,sections,TechnicalFileSection
+Domain Models,technical-file.ts,TechnicalFileSection,Interface,Dossier section,"id, title, subheadings",TechnicalFileSubheading
+Domain Models,technical-file.ts,TechnicalFileSubheading,Interface,Section subheading,"id, title, items, archived",TechnicalFileItem
+Domain Models,document-template.ts,ProjectDocumentTemplate,Interface,Doc template,"type, versions",ProjectDocumentTemplateVersion
+Domain Models,document-template.ts,ManualBlock,Interface,Owner's Manual block,"chapterKey, subchapterKey, included, userContent",ProjectDocumentTemplateVersion
+Domain Models,library-v4.ts,LibraryCategory,Interface,Catalog category,"name, sortOrder",LibrarySubcategory
+Domain Models,library-v4.ts,LibrarySubcategory,Interface,Catalog subcategory,"categoryId, name",Article/Kit
+Domain Models,library-v4.ts,LibraryArticle,Interface,Equipment article,"code, name, unit, currentVersionId",ArticleVersion
+Domain Models,library-v4.ts,ArticleVersion,Interface,Article version,"sellPrice, costPrice, status, attachments",ArticleAttachment
+Domain Models,library-v4.ts,LibraryKit,Interface,Assembly kit,"code, name, currentVersionId",KitVersion
+Domain Models,library-v4.ts,KitVersion,Interface,Kit version,"sellPrice, components, explodeInBOM",KitComponent
+Domain Models,production-procedure.ts,ProductionProcedure,Interface,Procedure template,"code, name, stageCode, currentVersionId",ProductionProcedureVersion
+Domain Models,production-procedure.ts,ProductionProcedureStep,Interface,Procedure step,"title, estimatedHours, instructions",ProductionProcedureVersion
+Domain Models,timesheet.ts,TimesheetEntry,Interface,Time entry,"date, hours, projectId, billable",Project/WorkItem
+Domain Models,staff.ts,StaffMember,Interface,Staff member,"name, label, isActive",WorkItem assignees
+Domain Models,equipment-list.ts,EquipmentListDocument,Interface,Equipment export,"sections, brandKey, version",EquipmentListSection
+Domain Models,work-instruction.ts,WorkInstruction,Interface,Work instruction,"title, stageCategory, content, status",WorkItem
+Domain Models,work-instruction.ts,WorkInstructionComment,Interface,Instruction comment,"body, createdBy",WorkInstruction
+Domain Models,user.ts,User,Interface,App user,"email, role, permissions",AuditEntry
+Domain Models,audit.ts,AuditEntry,Interface,Audit log,"entityType, entityId, action, description",All entities

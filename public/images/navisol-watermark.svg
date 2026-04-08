@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 350" fill="#5b9aa9">
+  <!-- Propeller/Wheel -->
+  <circle cx="200" cy="140" r="90" fill="none" stroke="#5b9aa9" stroke-width="16"/>
+  <circle cx="200" cy="140" r="20" fill="none" stroke="#5b9aa9" stroke-width="10"/>
+  <!-- Spokes -->
+  <line x1="200" y1="60" x2="200" y2="120" stroke="#5b9aa9" stroke-width="12" stroke-linecap="round"/>
+  <line x1="200" y1="160" x2="200" y2="220" stroke="#5b9aa9" stroke-width="12" stroke-linecap="round"/>
+  <line x1="120" y1="140" x2="180" y2="140" stroke="#5b9aa9" stroke-width="12" stroke-linecap="round"/>
+  <line x1="220" y1="140" x2="280" y2="140" stroke="#5b9aa9" stroke-width="12" stroke-linecap="round"/>
+  <!-- Upper wave -->
+  <path d="M40 280 Q100 220 180 260 Q260 300 350 240" fill="none" stroke="#5b9aa9" stroke-width="18" stroke-linecap="round"/>
+  <!-- Lower wave -->
+  <path d="M20 310 Q80 280 140 300 Q200 320 260 290" fill="none" stroke="#5b9aa9" stroke-width="10" stroke-linecap="round"/>
+</svg>

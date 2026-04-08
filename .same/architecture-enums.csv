@@ -1,0 +1,28 @@
+Category,Enum Name,Values,Used By,Description
+Project Status,ProjectStatus,"DRAFT, QUOTED, OFFER_SENT, ORDER_CONFIRMED, IN_PRODUCTION, READY_FOR_DELIVERY, DELIVERED, CLOSED",Project,Project lifecycle states
+Project Type,ProjectType,"NEW_BUILD, REFIT, MAINTENANCE",Project,Type of project work
+Quote Status,QuoteStatus,"DRAFT, SENT, ACCEPTED, REJECTED, EXPIRED, SUPERSEDED",ProjectQuote,Quote lifecycle states
+Document Status,DocumentStatus,"DRAFT, FINAL, SUPERSEDED, ARCHIVED",ProjectDocument,Document lifecycle states
+WorkItem Kind,WorkItemKind,"planning, production",WorkItem,Discriminator for task type
+WorkItem Status,WorkItemStatus,"TODO, IN_PROGRESS, ON_HOLD, COMPLETED, CANCELLED",WorkItem,Task status states
+Task Priority,TaskPriority,"LOW, MEDIUM, HIGH, URGENT",WorkItem,Task urgency level
+Task Category,TaskCategory,"HULL, PROPULSION, ELECTRICAL, INTERIOR, EXTERIOR, NAVIGATION, SAFETY, FINISHING, TESTING, DELIVERY, OTHER",WorkItem,Production category
+Stage Status,ProductionStageStatus,"NOT_STARTED, IN_PROGRESS, COMPLETED, BLOCKED",ProductionStage,Stage progress states
+Stage Code,ProductionStageCode,"PREP, HULL, PROPULSION, ELECTRICAL, INTERIOR, EXTERIOR, SYSTEMS, TESTING, FINAL",ProductionStage,9 default stages
+Certification Type,CertificationType,"CE, ES_TRIN, LLOYDS, OTHER",ComplianceCertification,Certification standard
+Checklist Item Type,ChecklistItemType,"DOC, INSPECTION, CALC, CONFIRM",ComplianceChecklistItem,Type of checklist verification
+Checklist Status,ChecklistItemStatus,"NOT_STARTED, IN_PROGRESS, PASSED, FAILED, NA",ComplianceChecklistItem,Checklist completion status
+Technical Section,TechnicalFileSectionId,"general-description, design-drawings, calculations, materials, essential-requirements, stability-buoyancy, electrical-systems, fuel-systems, steering-systems, conformity-assessment",TechnicalFile,10 fixed dossier sections
+Article Version Status,ArticleVersionStatus,"DRAFT, APPROVED, DEPRECATED",ArticleVersion,Version lifecycle
+Kit Version Status,KitVersionStatus,"DRAFT, APPROVED, DEPRECATED",KitVersion,Version lifecycle
+Cost Rollup Mode,CostRollupMode,"SUM_COMPONENTS, MANUAL",KitVersion,How kit cost is calculated
+Attachment Type,AttachmentType,"3D, CNC, MANUAL, CERTIFICATE, DRAWING, DATASHEET, OTHER",ArticleAttachment/ComplianceAttachment,File type classification
+Propulsion Type,PropulsionType,"Electric, Hybrid, Diesel, Outboard",Project,Boat propulsion method
+Design Category,DesignCategory,"A, B, C, D",VesselIdentity,RCD design category
+Client Type,ClientType,"company, private",Client,Customer classification
+Client Status,ClientStatus,"active, prospect, inactive",Client,Customer state
+Document Type,DocumentType,"QUOTE, OWNERS_MANUAL, CE_DECLARATION, TECHNICAL_FILE, INVOICE, DELIVERY_NOTE, EQUIPMENT_LIST",ProjectDocument,Document classification
+Work Instruction Status,WorkInstructionStatus,"draft, published",WorkInstruction,Instruction publication state
+Work Instruction Scope,WorkInstructionScope,"general, modelSpecific",WorkInstruction,Instruction applicability
+Planning Summary Type,PlanningSummaryType,"stage, procedure",PlanningSummary,Summary grouping method
+User Role,Role,"admin, manager, production_lead, production_worker, viewer",User,Authorization level

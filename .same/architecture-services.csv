@@ -1,0 +1,25 @@
+Layer,Service,Responsibility,Key Methods,Entities Used,Dependencies
+Domain Services,ProjectService,Project lifecycle,"create, transitionStatus, updateProjectType, archive","Project, Client",ProjectRepository/AuditService
+Domain Services,ConfigurationService,Equipment configuration,"addItem, updateItem, removeItem, moveItem","Project, ConfigurationItem",ProjectRepository/PricingService
+Domain Services,QuoteService,Quote management,"createDraft, updateDraft, markAsSent, markAsAccepted, markAsRejected, createNewVersion","Project, ProjectQuote",ProjectRepository/AuditService
+Domain Services,AmendmentService,Post-freeze changes,"requestAmendment, validateAmendment","Project, ProjectAmendment",ProjectRepository/ConfigurationService
+Domain Services,BOMService,Bill of Materials,"generateBOM, exportToCSV","Project, BOMSnapshot, BOMItem",ProjectRepository/LibraryV4Service
+Domain Services,TaskService,Production tasks,"createTask, updateTask, updateTaskStatus, logTime, deleteTimeLog, moveToStage, getTaskSummary","Project, WorkItem, TaskTimeLog",ProjectRepository/AuditService
+Domain Services,DocumentService,Document generation,"generateFromTemplate, finalizeDocument, deleteDocument","Project, ProjectDocument",ProjectRepository/TemplateService
+Domain Services,TemplateService,Template rendering,"renderQuoteTemplate, renderEquipmentListTemplate, getPlaceholders","Project, Client, Quote",None (pure logic)
+Domain Services,PDFService,PDF generation,"openPDFWindow, getWatermark, getPrintStyles",None,None (browser APIs)
+Domain Services,ComplianceService,CE certification,"createCertification, addChapter, updateChecklistItem, finalizeChapter","Project, ComplianceCertification",ProjectRepository/AuditService
+Domain Services,ProductionService,Stage management,"initializeStages, updateStageProgress, addComment, addPhoto","Project, ProductionStage",ProjectRepository/AuditService
+Domain Services,ProductionProcedureService,Procedure templates,"create, update, approve, applyToProject","ProductionProcedure, ProductionProcedureVersion",ProductionProcedureRepository
+Domain Services,TimesheetService,Time entries,"create, update, delete, getWeeklyView, getMonthlyView","TimesheetEntry, Project",TimesheetRepository/ProjectRepository
+Domain Services,LibraryV4Service,Articles/Kits,"createCategory, createArticle, createArticleVersion, approveVersion, createKit","Category, Subcategory, Article, Kit",LibraryV4Repository
+Domain Services,BoatModelService,Boat model catalog,"create, update, setDefaultConfiguration","BoatModel, BoatModelVersion",LibraryRepository
+Domain Services,EquipmentCatalogService,Legacy catalog (deprecated),"getItems, search","CatalogItem, CatalogVersion",LibraryRepository
+Domain Services,DeliveryPackService,Delivery bundles,"generateDeliveryPack, downloadDeliveryPack","Project, ProjectDocument",ProjectRepository/DocumentService
+Domain Services,EquipmentListService,Equipment exports,"generate, getDefaultBrands","Project, EquipmentListDocument",ProjectRepository
+Domain Services,WINRegisterService,WIN registry,"register, validate, search",Project,ProjectRepository
+Domain Services,PlanningSummaryService,Gantt summaries,"generateSummaries, refreshSummary, recalculateDates","Project, WorkItem, PlanningSummary",ProjectRepository
+Domain Services,WorkInstructionService,Work instructions,"create, update, publish, duplicate, addComment, initSampleData","WorkInstruction, WorkInstructionComment",WorkInstructionRepository
+Domain Services,LegacyMigrationService,Data migration,migrateFromV3,"Project, Library",All Repositories
+Domain Services,SettingsService,App settings,"getSettings, updateSettings, getBranding",Settings,LocalStorage
+Domain Services,AuthService,Authentication,"login, logout, validateToken, getCurrentUser","User, Session",LocalStorage
