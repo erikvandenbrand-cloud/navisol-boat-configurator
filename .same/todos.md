@@ -1,6 +1,13 @@
 # Navisol v4 - Active Tasks
 
 ## Recently Completed
+- [x] **Floor Assistant - Next.js App Router Fix** (v381)
+  - ✅ Removed conflicting /api/chat.js from root directory
+  - ✅ Updated src/app/api/chat/route.ts to use native https module
+  - ✅ Removed functions config from vercel.json
+  - ✅ Now uses proper Next.js App Router architecture exclusively
+  - ✅ Fixed framework: nextjs conflict with root serverless functions
+
 - [x] **Floor Assistant - Vercel Build Fix** (v380)
   - ✅ Rewrote /api/chat.js to use native Node.js https module
   - ✅ Fixed Vercel build error: ENOENT babel-code-frame/index.js
