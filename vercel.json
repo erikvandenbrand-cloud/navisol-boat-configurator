@@ -19,10 +19,5 @@
       "source": "/settings",
       "destination": "/"
     }
-  ],
-  "functions": {
-    "api/chat.js": {
-      "maxDuration": 60
-    }
-  }
+  ]
 }

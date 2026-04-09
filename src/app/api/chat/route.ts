@@ -1,6 +1,8 @@
 /**
- * Chat API Proxy Route
+ * Chat API Proxy Route (Next.js App Router)
  * Proxies requests server-side to Anthropic API to solve CORS issues
+ *
+ * Uses native Node.js https module for maximum compatibility
  *
  * Usage from client:
  * const response = await fetch('/api/chat', {
@@ -15,6 +17,52 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
+import https from 'https';
+
+/**
+ * Make HTTPS request using native Node.js module
+ */
+function makeHttpsRequest(
+  hostname: string,
+  path: string,
+  options: { method: string; headers: Record<string, string> },
+  postData: string
+): Promise<{ statusCode: number; body: string }> {
+  return new Promise((resolve, reject) => {
+    const req = https.request(
+      {
+        hostname,
+        path,
+        method: options.method,
+        headers: options.headers,
+      },
+      (res) => {
+        let data = '';
+
+        res.on('data', (chunk) => {
+          data += chunk;
+        });
+
+        res.on('end', () => {
+          resolve({
+            statusCode: res.statusCode || 500,
+            body: data,
+          });
+        });
+      }
+    );
+
+    req.on('error', (error) => {
+      reject(error);
+    });
+
+    if (postData) {
+      req.write(postData);
+    }
+
+    req.end();
+  });
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -59,27 +107,52 @@ export async function POST(request: NextRequest) {
       anthropicRequest.system = system;
     }
 
-    // Forward request to Anthropic API
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
+    console.log('Calling Anthropic API with model:', model);
+
+    // Prepare request data
+    const postData = JSON.stringify(anthropicRequest);
+
+    // Forward request to Anthropic API using native https module
+    const response = await makeHttpsRequest(
+      'api.anthropic.com',
+      '/v1/messages',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Content-Length': Buffer.byteLength(postData).toString(),
+          'x-api-key': apiKey,
+          'anthropic-version': '2023-06-01',
+        },
       },
-      body: JSON.stringify(anthropicRequest),
-    });
+      postData
+    );
 
     // Parse response
-    const data = await response.json();
-
-    // Check for errors from Anthropic
-    if (!response.ok) {
+    let data: any;
+    try {
+      data = JSON.parse(response.body);
+    } catch (parseError) {
+      console.error('Failed to parse Anthropic response:', response.body);
       return NextResponse.json(
-        { error: data.error?.message || 'Anthropic API error', details: data },
-        { status: response.status }
+        {
+          error: 'Invalid response from Anthropic API',
+          message: parseError instanceof Error ? parseError.message : 'Parse error',
+        },
+        { status: 500 }
       );
     }
+
+    // Check for errors from Anthropic
+    if (response.statusCode !== 200) {
+      console.error('Anthropic API error:', data);
+      return NextResponse.json(
+        { error: data.error?.message || 'Anthropic API error', details: data },
+        { status: response.statusCode }
+      );
+    }
+
+    console.log('Anthropic API success');
 
     // Return successful response
     return NextResponse.json(data);
