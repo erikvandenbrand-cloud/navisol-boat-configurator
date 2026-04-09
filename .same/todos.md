@@ -1,6 +1,14 @@
 # Navisol v4 - Active Tasks
 
 ## Recently Completed
+- [x] **API Route Diagnostics Added** (v382)
+  - ✅ Added GET handler to /api/chat for testing
+  - ✅ Returns status, timestamp, and runtime info
+  - ✅ Verified working locally (returns 200 OK)
+  - ✅ Created comprehensive troubleshooting guide
+  - ⏳ Awaiting production test on Vercel
+
+## Recently Completed
 - [x] **Floor Assistant - Next.js App Router Fix** (v381)
   - ✅ Removed conflicting /api/chat.js from root directory
   - ✅ Updated src/app/api/chat/route.ts to use native https module
