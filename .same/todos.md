@@ -1,6 +1,13 @@
 # Navisol v4 - Active Tasks
 
 ## Recently Completed
+- [x] **Floor Assistant - Vercel Build Fix** (v380)
+  - ✅ Rewrote /api/chat.js to use native Node.js https module
+  - ✅ Fixed Vercel build error: ENOENT babel-code-frame/index.js
+  - ✅ Removed fetch() dependency (caused Next.js conflicts)
+  - ✅ Changed to CommonJS module.exports from ES6 export
+  - ✅ Zero external dependencies - pure Node.js
+
 - [x] **Floor Assistant - Direct API Call Fix** (v379)
   - ✅ FloorAssistantScreen now calls /api/chat directly with fetch()
   - ✅ Removed dependency on callClaude wrapper
