@@ -8,6 +8,8 @@ This directory contains Vercel serverless functions for the Navisol application.
 
 Proxies chat requests to the Anthropic Claude API to avoid CORS issues and keep the API key secure.
 
+**Implementation:** Uses native Node.js `https` module (no dependencies) to avoid conflicts with Next.js build process.
+
 **Environment Variables Required:**
 - `ANTHROPIC_API_KEY` - Your Anthropic API key
 

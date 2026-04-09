@@ -2,11 +2,52 @@
  * Vercel Serverless Function: Chat API Proxy
  * Proxies requests to Anthropic API to avoid CORS issues
  *
+ * Uses native Node.js https module (no dependencies)
+ *
  * Environment Variables Required:
  * - ANTHROPIC_API_KEY
  */
 
-export default async function handler(req, res) {
+const https = require('https');
+
+/**
+ * Make HTTPS request using native Node.js module
+ */
+function makeHttpsRequest(hostname, path, options, postData) {
+  return new Promise((resolve, reject) => {
+    const req = https.request({
+      hostname,
+      path,
+      method: options.method,
+      headers: options.headers,
+    }, (res) => {
+      let data = '';
+
+      res.on('data', (chunk) => {
+        data += chunk;
+      });
+
+      res.on('end', () => {
+        resolve({
+          statusCode: res.statusCode,
+          body: data,
+        });
+      });
+    });
+
+    req.on('error', (error) => {
+      reject(error);
+    });
+
+    if (postData) {
+      req.write(postData);
+    }
+
+    req.end();
+  });
+}
+
+module.exports = async function handler(req, res) {
   // Only allow POST requests
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -47,24 +88,41 @@ export default async function handler(req, res) {
 
     console.log('Calling Anthropic API with model:', model);
 
-    // Forward request to Anthropic API
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
+    // Prepare request data
+    const postData = JSON.stringify(anthropicRequest);
+
+    // Forward request to Anthropic API using native https module
+    const response = await makeHttpsRequest(
+      'api.anthropic.com',
+      '/v1/messages',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Content-Length': Buffer.byteLength(postData),
+          'x-api-key': apiKey,
+          'anthropic-version': '2023-06-01',
+        },
       },
-      body: JSON.stringify(anthropicRequest),
-    });
+      postData
+    );
 
     // Parse response
-    const data = await response.json();
+    let data;
+    try {
+      data = JSON.parse(response.body);
+    } catch (parseError) {
+      console.error('Failed to parse Anthropic response:', response.body);
+      return res.status(500).json({
+        error: 'Invalid response from Anthropic API',
+        message: parseError.message,
+      });
+    }
 
     // Check for errors from Anthropic
-    if (!response.ok) {
+    if (response.statusCode !== 200) {
       console.error('Anthropic API error:', data);
-      return res.status(response.status).json({
+      return res.status(response.statusCode).json({
         error: data.error?.message || 'Anthropic API error',
         details: data,
       });
@@ -82,4 +140,4 @@ export default async function handler(req, res) {
       message: error.message || 'Unknown error',
     });
   }
-}
+};
