@@ -60,27 +60,40 @@ export function FloorAssistantScreen() {
         { role: 'user', content: userMessage.content },
       ];
 
-      // Call /api/chat endpoint (Vercel serverless function in production)
+      // Build request body
+      const requestBody = {
+        system: SYSTEM_PROMPT,
+        messages: chatMessages,
+        model: 'claude-3-5-sonnet-20241022',
+        max_tokens: 2048,
+        temperature: 1.0,
+      };
+
+      console.log('Calling /api/chat with:', {
+        url: '/api/chat',
+        method: 'POST',
+        messageCount: chatMessages.length,
+      });
+
+      // Call /api/chat endpoint (Next.js App Router API route)
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          system: SYSTEM_PROMPT,
-          messages: chatMessages,
-          model: 'claude-3-5-sonnet-20241022',
-          max_tokens: 2048,
-          temperature: 1.0,
-        }),
+        body: JSON.stringify(requestBody),
       });
+
+      console.log('Response status:', response.status, response.statusText);
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+        console.error('API error:', errorData);
         throw new Error(errorData.error || `HTTP ${response.status}: ${response.statusText}`);
       }
 
       const data = await response.json();
+      console.log('API success, received:', data.id);
 
       // Extract assistant response
       const assistantMessage: Message = {
@@ -91,7 +104,8 @@ export function FloorAssistantScreen() {
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (err) {
       console.error('Chat error:', err);
-      setError(err instanceof Error ? err.message : 'Er is iets misgegaan');
+      const errorMessage = err instanceof Error ? err.message : 'Er is iets misgegaan';
+      setError(`Fout bij /api/chat: ${errorMessage}`);
     } finally {
       setIsLoading(false);
       textareaRef.current?.focus();
