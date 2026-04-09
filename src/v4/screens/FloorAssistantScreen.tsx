@@ -2,7 +2,6 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { MessageSquare, Send, Loader2, AlertCircle, Trash2 } from 'lucide-react';
-import { callClaude, type AnthropicMessage } from '@/lib/anthropic';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -14,6 +13,11 @@ interface Message {
   role: 'user' | 'assistant';
   content: string;
   timestamp: Date;
+}
+
+interface ChatMessage {
+  role: 'user' | 'assistant';
+  content: string;
 }
 
 export function FloorAssistantScreen() {
@@ -50,32 +54,43 @@ export function FloorAssistantScreen() {
     setIsLoading(true);
 
     try {
-      // Build message history for Claude
-      const claudeMessages: AnthropicMessage[] = [
+      // Build message history for API
+      const chatMessages: ChatMessage[] = [
         ...messages.map((m) => ({ role: m.role, content: m.content })),
         { role: 'user', content: userMessage.content },
       ];
 
-      // Call Claude via API proxy
-      const response = await callClaude({
-        system: SYSTEM_PROMPT,
-        messages: claudeMessages,
-        model: 'claude-3-5-sonnet-20241022',
-        max_tokens: 2048,
-        temperature: 1.0,
+      // Call /api/chat endpoint (Vercel serverless function in production)
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          system: SYSTEM_PROMPT,
+          messages: chatMessages,
+          model: 'claude-3-5-sonnet-20241022',
+          max_tokens: 2048,
+          temperature: 1.0,
+        }),
       });
 
-      if (response.ok) {
-        const assistantMessage: Message = {
-          role: 'assistant',
-          content: response.data.content[0].text,
-          timestamp: new Date(),
-        };
-        setMessages((prev) => [...prev, assistantMessage]);
-      } else {
-        setError(response.error);
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+        throw new Error(errorData.error || `HTTP ${response.status}: ${response.statusText}`);
       }
+
+      const data = await response.json();
+
+      // Extract assistant response
+      const assistantMessage: Message = {
+        role: 'assistant',
+        content: data.content[0].text,
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, assistantMessage]);
     } catch (err) {
+      console.error('Chat error:', err);
       setError(err instanceof Error ? err.message : 'Er is iets misgegaan');
     } finally {
       setIsLoading(false);
