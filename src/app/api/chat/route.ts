@@ -64,6 +64,16 @@ function makeHttpsRequest(
   });
 }
 
+// GET handler for testing/health check
+export async function GET() {
+  return NextResponse.json({
+    status: 'ok',
+    message: 'Chat API is running',
+    timestamp: new Date().toISOString(),
+    runtime: process.env.VERCEL ? 'vercel' : 'local',
+  });
+}
+
 export async function POST(request: NextRequest) {
   try {
     // Check for API key
