@@ -97,8 +97,26 @@ The API endpoint is at `/api/chat` and accepts:
 ```
 
 ## Environment Requirements
-- **ANTHROPIC_API_KEY** must be set in `.env.local`
+- **ANTHROPIC_API_KEY** must be set in `.env.local` (local) and Vercel environment variables (production)
 - API calls are proxied server-side for security
+
+## Production Deployment
+
+### Vercel Serverless Function
+The production deployment uses a Vercel serverless function at `/api/chat.js` instead of the Next.js App Router API route. This ensures proper routing on Vercel.
+
+**Files:**
+- `/api/chat.js` - Vercel serverless function (production)
+- `/src/app/api/chat/route.ts` - Next.js API route (local development)
+
+**Configuration:**
+- `vercel.json` includes function timeout configuration (60s max duration)
+- Environment variable `ANTHROPIC_API_KEY` must be set in Vercel project settings
+
+**To deploy:**
+1. Set `ANTHROPIC_API_KEY` in Vercel project settings
+2. Push to GitHub master branch
+3. Vercel will automatically deploy
 
 ## Testing Checklist
 - [x] Login as Production user

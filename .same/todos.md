@@ -1,6 +1,13 @@
 # Navisol v4 - Active Tasks
 
 ## Recently Completed
+- [x] **Floor Assistant - Production Deployment Fix** (v377)
+  - ✅ Created Vercel serverless function at /api/chat.js
+  - ✅ Fixed 404 error on /api/chat in production
+  - ✅ Updated vercel.json with function configuration
+  - ✅ Added 60s max duration for API calls
+  - ✅ Documented serverless function setup in /api/README.md
+
 - [x] **Floor Assistant - Final Integration** (completed)
   - ✅ FloorAssistantScreen component implemented
   - ✅ System prompt configured
