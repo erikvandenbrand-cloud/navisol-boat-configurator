@@ -1,7 +1,14 @@
 # Navisol v4 - Active Tasks
 
 ## Recently Completed
-- [x] **Floor Assistant - Production Deployment Fix** (v377)
+- [x] **Floor Assistant - Direct API Call Fix** (v379)
+  - ✅ FloorAssistantScreen now calls /api/chat directly with fetch()
+  - ✅ Removed dependency on callClaude wrapper
+  - ✅ Added explicit error handling for HTTP responses
+  - ✅ Added console.error for debugging
+  - ✅ Clearer code flow for production/local API communication
+
+- [x] **Floor Assistant - Production Deployment Fix** (v378)
   - ✅ Created Vercel serverless function at /api/chat.js
   - ✅ Fixed 404 error on /api/chat in production
   - ✅ Updated vercel.json with function configuration
