@@ -11,7 +11,7 @@
  *   body: JSON.stringify({
  *     system: 'You are a helpful assistant',
  *     messages: [{ role: 'user', content: 'Hello' }],
- *     model: 'claude-3-5-sonnet-20241022'
+ *     model: 'claude-sonnet-4-5'
  *   })
  * });
  */
